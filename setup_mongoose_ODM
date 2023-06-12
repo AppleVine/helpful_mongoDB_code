@@ -1,0 +1,56 @@
+## Make a package.json file:
+npm init --y
+
+----
+## install mongoose:
+npm install mongoose
+
+----
+## index.js add connection (mongodb://domain:port/databaseName)
+
+```js
+const mongoose = require('mongoose');
+
+async function dbConnect(){
+    try {
+        await mongoose.connect('mongodb://localhost:27017/CoderIsAwesome');
+        console.log("Database connected!");
+    } catch (error) {
+        console.log(`dbConnect failed! Error:\n${JSON.stringify(error)}`);
+    }
+}
+
+dbConnect();
+```
+
+**Note this leaves the database open... and isn't idea.**
+
+----
+## Open & close the database 
+
+```js
+const mongoose = require('mongoose');
+
+async function dbConnect(){
+    try {
+        await mongoose.connect('mongodb://localhost:27017/CoderIsAwesome');
+        console.log("Database connected!");
+    } catch (error) {
+        console.log(`dbConnect failed! Error:\n${JSON.stringify(error)}`);
+    }
+}
+
+async function dbClose(){
+    await mongoose.connection.close();
+    console.log("Database disconnected!");
+}
+
+async function someAppFunction(){
+    await dbConnect();
+    console.log("Closing the DB now so the app doesn't hang open for ages...");
+    await dbClose();
+}
+
+someAppFunction();
+```
+
